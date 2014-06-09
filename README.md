@@ -1,4 +1,4 @@
 learning-R
 ==========
 
-Coursera data science courses
+Learning R: Coursera data science courses
