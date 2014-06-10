@@ -39,8 +39,8 @@ complete <- function(directory, id = 1:332) {
                 as.integer(c(i)), 
                 # count the number of complete cases
                 sum(complete.cases(read.csv(paste0(directory, "/", files[i]))))
-                )#cbind
-            )#rbind
+            )#cbind
+        )#rbind
     } # end for loop
     
     ## Return a data frame of the form:
