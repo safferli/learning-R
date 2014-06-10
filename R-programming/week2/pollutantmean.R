@@ -37,17 +37,12 @@ setwd(workspace)
 # 4. use the pollutant type to extract the the relevant column
 # 5. calculate the mean making sure you set na.rm=TRUE
 
+# sprintf: C-style string formatting
+# %03d: for numbers, pad to "3" length by adding 0 to the front
 # for(i in id) { 
 #   filename = file.path(directory, sprintf("%03d.csv", i))
 #   df = read.csv(filename)
 # } 
-
-
-
-# data <- read.csv(paste0(workspace, "hw1_data.csv"))
-#directory <- "specdata"
-#pollutant <- c("sulfate")
-#id <- 1:3
 
 ## 'directory' is a character vector of length 1 indicating
 ## the location of the CSV files
@@ -61,16 +56,11 @@ setwd(workspace)
 pollutantmean <- function(directory, pollutant, id = 1:332) {
     # get all filenames
     files <- list.files(directory, pattern="csv")    
+    # initialise dataframe so that rbind() can append
+    selected_data <- data.frame()
     # loop to read only selected files
     for (i in id) {
-        # if the merged dataset doesn't exist, create it
-        if (!exists("selected_data")) {
-            selected_data <- read.csv(paste0(directory, "/", files[i]))
-        }
-        # if the merged dataset does exist, append to it
-        if (exists("selected_data")) {
-            selected_data <- rbind(selected_data, read.csv(paste0(directory, "/", files[i])))
-        }
+        selected_data <- rbind(selected_data, read.csv(paste0(directory, "/", files[i])))
     } # end for loop
     
     # Calculate the mean of the pollutant across all monitors list
@@ -80,6 +70,7 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
     pollutant_mean
 }
 
+## testing with known output
 #source("pollutantmean.R")
 pollutantmean("specdata", "sulfate", 1:10)
 ## [1] 4.064
