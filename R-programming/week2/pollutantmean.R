@@ -1,9 +1,9 @@
-rm(list = ls()); gc(); gc()
-options(bitmapType='cairo')
-options(scipen = 999)# full numeric output
+#rm(list = ls()); gc(); gc()
+#options(bitmapType='cairo')
+#options(scipen = 999)# full numeric output
 # require(RODBC)
 # require(XML)
-require(data.table)
+#require(data.table)
 # require(plyr)
 # require(dplyr)
 # require(reshape2)
