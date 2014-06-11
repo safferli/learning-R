@@ -16,15 +16,26 @@
 # require(RColorBrewer)
 
 # Define your workspace: "C:/xxx/"
-workspace <- "/home/safferli/Documents/R-course/github/R-programming/week2/"
+#workspace <- "/home/safferli/Documents/R-course/github/R-programming/week2/"
+workspace <- "D:/github/learning-R/R-programming/week2/"
 setwd(workspace)
 
-## 'directory' is a character vector of length 1 indicating
-## the location of the CSV files
 
-## 'id' is an integer vector indicating the monitor ID numbers
-## to be used
 complete <- function(directory, id = 1:332) {    
+    ## 'directory' is a character vector of length 1 indicating
+    ## the location of the CSV files
+    
+    ## 'id' is an integer vector indicating the monitor ID numbers
+    ## to be used
+    
+    ## Return a data frame of the form:
+    ## id nobs
+    ## 1  117
+    ## 2  1041
+    ## ...
+    ## where 'id' is the monitor ID number and 'nobs' is the
+    ## number of complete cases
+  
     # get all filenames
     files <- list.files(directory, pattern="csv")    
     # initialise dataframe so that rbind() can append
@@ -42,14 +53,6 @@ complete <- function(directory, id = 1:332) {
                 )#cbind
             )#rbind
     } # end for loop
-    
-    ## Return a data frame of the form:
-    ## id nobs
-    ## 1  117
-    ## 2  1041
-    ## ...
-    ## where 'id' is the monitor ID number and 'nobs' is the
-    ## number of complete cases
     
     # correct output naming and returning
     colnames(total) <- c("id","nobs")

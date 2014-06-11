@@ -16,7 +16,8 @@
 # require(RColorBrewer)
 
 # Define your workspace: "C:/xxx/"
-workspace <- "/home/safferli/Documents/R-course/github/R-programming/week2/"
+#workspace <- "/home/safferli/Documents/R-course/github/R-programming/week2/"
+workspace <- "D:/github/learning-R/R-programming/week2/"
 setwd(workspace)
 
 # This is general guide to the first prog assignment. It is to give you some
@@ -44,16 +45,18 @@ setwd(workspace)
 #   df = read.csv(filename)
 # } 
 
-## 'directory' is a character vector of length 1 indicating
-## the location of the CSV files
-##
-## 'pollutant' is a character vector of length 1 indicating
-## the name of the pollutant for which we will calculate the
-## mean; either "sulfate" or "nitrate".
-##
-## 'id' is an integer vector indicating the monitor ID numbers
-## to be used
+
 pollutantmean <- function(directory, pollutant, id = 1:332) {
+  ## 'directory' is a character vector of length 1 indicating
+  ## the location of the CSV files
+  ##
+  ## 'pollutant' is a character vector of length 1 indicating
+  ## the name of the pollutant for which we will calculate the
+  ## mean; either "sulfate" or "nitrate".
+  ##
+  ## 'id' is an integer vector indicating the monitor ID numbers
+  ## to be used
+  
     # get all filenames
     files <- list.files(directory, pattern="csv")    
     # initialise dataframe so that rbind() can append
@@ -72,11 +75,11 @@ pollutantmean <- function(directory, pollutant, id = 1:332) {
 
 ## testing with known output
 #source("pollutantmean.R")
-pollutantmean("specdata", "sulfate", 1:10)
+#pollutantmean("specdata", "sulfate", 1:10)
 ## [1] 4.064
-pollutantmean("specdata", "nitrate", 70:72)
+#pollutantmean("specdata", "nitrate", 70:72)
 ## [1] 1.706
-pollutantmean("specdata", "nitrate", 23)
+#pollutantmean("specdata", "nitrate", 23)
 ## [1] 1.281
 
 
