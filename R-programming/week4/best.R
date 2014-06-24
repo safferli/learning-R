@@ -17,6 +17,7 @@ require(data.table)
 
 # Define your workspace: "X:/xxx/"
 workspace <- "D:/github/learning-R/R-programming/week4/"
+#workspace <- "/home/safferli/Documents/R-course/github/R-programming/week4/"
 setwd(workspace)
 
 outcome <- read.csv("outcome-of-care-measures.csv", colClasses = "character")
@@ -33,10 +34,52 @@ hist(outcome[, 11])
 
 best <- function(state, outcome) {
     ## Read outcome data
+    keep_columns <- rep("NULL", times=46)
+    keep_columns[2] <- "character" # Hospital.Name
+    keep_columns[7] <- "factor" # State
+    keep_columns[c(11, 17, 23)] <- "character" # outcomes
+    data <- data.table(read.csv("outcome-of-care-measures.csv", 
+                                colClasses = keep_columns,
+                                na.strings = "Not Available",
+                                stringsAsFactors = FALSE))
+    # data <- data.table(read.csv("outcome-of-care-measures.csv", stringsAsFactors = FALSE))
+    # data$State <- factor(data$State)
     ## Check that state and outcome are valid
-    ## Return hospital name in that state with lowest 30-day death
-    ## rate
+    # is state valid? 
+    if(!state %in% data$State) {
+        stop("invalid state")
+    }
+    # is outcome valid?
+    possible_outcomes <- c("heart attack", "heart failure", or "pneumonia")
+    if(!outcome %in% possible_outcomes) {
+        stop("invalid outcome") 
+    }
+    ## Return hospital name in that state with lowest 30-day death rate
+    
 }
+
+
+As with [.data.frame, compound queries can be concatenated on one line; e.g.,
+         
+         DT[,sum(v),by=colA][V1<300][tail(order(V1))]
+         # sum(v) by colA then return the 6 largest which are under 300
+
+
+11. Number of Hospitals whose 30-Day Death (Mortality) Rates from Pneumonia are No
+different than U.S. National Rate: integer Lists the number of hospitals for each
+measure/category combination.
+
+17. Number of Hospitals whose 30-Day Readmission Rates from Heart Attack are
+Number of Cases Too Small: integer Lists the number of hospitals for each
+measure/category combination.
+
+23. Number of Hospitals whose 30-Day Readmission Rates from Pneumonia are No
+different than U.S. National Rate: integer Lists the number of hospitals for each
+measure/category combination.
+
+
+
+
 The function should check the validity of its arguments. If an invalid state value is passed to best, the
 function should throw an error via the stop function with the exact message "invalid state". If an invalid
 outcome value is passed to best, the function should throw an error via the stop function with the exact
@@ -44,7 +87,23 @@ message "invalid outcome".
 
 
 
-
+best2 <- function(state, outcome) {
+    data <- read.csv("outcome-of-care-measures.csv")
+    outcomes <- c('heart attack', 'heart failure', 'pneumonia')
+    indices <- c(11, 17, 23)
+    
+    if (!state %in% data$State) stop("invalid state")
+    if (!outcome %in% outcomes) stop("invalid outcome")
+    
+    i <- indices[match(outcome, outcomes)]
+    hospitals <- data[data$State == state, c(2, i)]
+    hospitals[, 2] <- as.numeric(as.character(hospitals[, 2]))
+    hospitals <- na.omit(hospitals)
+    names(hospitals) <- c("name", "deaths")
+    min_deaths <- min(hospitals$deaths)
+    candidates <- hospitals[hospitals$deaths == min_deaths, ]$name
+    return(as.character(sort(candidates)[1]))
+}
 
 
 
