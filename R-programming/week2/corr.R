@@ -16,10 +16,20 @@
 # require(RColorBrewer)
 
 # Define your workspace: "C:/xxx/"
+<<<<<<< HEAD
+workspace <- "/home/safferli/Documents/R-course/github/R-programming/week2/"
+setwd(workspace)
+
+
+
+
+
+=======
 #workspace <- "/home/safferli/Documents/R-course/github/R-programming/week2/"
 workspace <- "D:/github/learning-R/R-programming/week2/"
 setwd(workspace)
 
+>>>>>>> 73946168ee8e7f0161ddcdafa0ef7e7c4b97dfa3
 corr <- function(directory, threshold = 0) {
     ## 'directory' is a character vector of length 1 indicating
     ## the location of the CSV files
