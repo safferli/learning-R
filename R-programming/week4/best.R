@@ -37,13 +37,19 @@ best <- function(state, outcome) {
     keep_columns <- rep("NULL", times=46)
     keep_columns[2] <- "character" # Hospital.Name
     keep_columns[7] <- "factor" # State
-    keep_columns[c(11, 17, 23)] <- "character" # outcomes
-    data <- data.table(read.csv("outcome-of-care-measures.csv", 
+    keep_columns[c(11, 17, 23)] <- "character" # outcomes, numeric returns error
+    # data.table throws errors upon changing to as.numeric later
+    # we'll use data.frame for now
+    data <- data.frame(read.csv("outcome-of-care-measures.csv", 
                                 colClasses = keep_columns,
                                 na.strings = "Not Available",
                                 stringsAsFactors = FALSE))
-    # data <- data.table(read.csv("outcome-of-care-measures.csv", stringsAsFactors = FALSE))
-    # data$State <- factor(data$State)
+    # http://stackoverflow.com/questions/3796266/change-the-class-of-many-columns-in-a-data-frame
+    # no idea why I need to do as.numeric(as.character()), as they *should* be stored as character in the first place!
+    # change columns 3,4,5 to numeric
+    cols = c(3,4,5)
+    data[, cols] = apply(data[, cols], 2, function(x) as.numeric(as.character(x)))
+    data <- data.table(data)
     ## Check that state and outcome are valid
     # is state valid? 
     if(!state %in% data$State) {
