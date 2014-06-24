@@ -1,0 +1,1 @@
+reading csv, certain columns, faster reading of sample data, certain columns: http://www.r-bloggers.com/using-colclasses-to-load-data-more-quickly-in-r/
