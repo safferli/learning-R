@@ -40,31 +40,36 @@ best <- function(state, outcome) {
     keep_columns[c(11, 17, 23)] <- "character" # outcomes, numeric returns error
     # data.table throws errors upon changing to as.numeric later
     # we'll use data.frame for now
-    data <- data.frame(read.csv("outcome-of-care-measures.csv", 
+    data <- read.csv("outcome-of-care-measures.csv", 
                                 colClasses = keep_columns,
                                 na.strings = "Not Available",
-                                stringsAsFactors = FALSE))
+                                stringsAsFactors = FALSE)
     # http://stackoverflow.com/questions/3796266/change-the-class-of-many-columns-in-a-data-frame
     # no idea why I need to do as.numeric(as.character()), as they *should* be stored as character in the first place!
     # change columns 3,4,5 to numeric
     cols = c(3,4,5)
     data[, cols] = apply(data[, cols], 2, function(x) as.numeric(as.character(x)))
-    data <- data.table(data)
+    # data.table for sorting/subsetting magic!
+    data <- data.table(data, key = "State")
+    
     ## Check that state and outcome are valid
     # is state valid? 
-    if(!state %in% data$State) {
-        stop("invalid state")
-    }
+    if(!state %in% data$State) stop("invalid state")
     # is outcome valid?
-    possible_outcomes <- c("heart attack", "heart failure", or "pneumonia")
-    if(!outcome %in% possible_outcomes) {
-        stop("invalid outcome") 
-    }
-    ## Return hospital name in that state with lowest 30-day death rate
+    possible_outcomes <- c("heart attack", "heart failure", "pneumonia")
+    if(!outcome %in% possible_outcomes) stop("invalid outcome")
     
+    ## Return hospital name in that state with lowest 30-day death rate
+    # get column number for outcome variable (+2, since outcomes start at col 3)
+    i <- match(outcome, possible_outcomes) + 2
+    # select only colums 1,2, and the outcome colum i; only keep correct state
+    state <- "TX" # testing
+    subset(data, State == state, select = colnames(data)[c(1,2,i)]
+           )[head(order(Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack,Hospital.Name), n=1L)][[1]]
 }
 
 
+mean(subset(data, Ozone>31 & Temp>90)$Solar.R)
 As with [.data.frame, compound queries can be concatenated on one line; e.g.,
          
          DT[,sum(v),by=colA][V1<300][tail(order(V1))]

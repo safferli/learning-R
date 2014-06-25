@@ -1,1 +1,3 @@
 reading csv, certain columns, faster reading of sample data, certain columns: http://www.r-bloggers.com/using-colclasses-to-load-data-more-quickly-in-r/
+
+http://statmethods.wordpress.com/2014/06/19/quickly-export-multiple-r-objects-to-an-excel-workbook/
