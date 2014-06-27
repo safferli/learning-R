@@ -120,6 +120,3 @@ rankhospital <- function(state, outcome, num = "best") {
 # [1] NA
 
 
-
-
-
