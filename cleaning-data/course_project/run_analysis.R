@@ -113,8 +113,8 @@ means_data <- selected_data %>%
 names(means_data) <- gsub("^(t|f)","mean_of_\\1", names(means_data))
 
 # write tidy dataset
-write.table(means_data, "tidy.txt", sep="\t")
-
+write.table(means_data, "tidy.txt", sep="\t", row.name=FALSE)
+                    
 
 
 
