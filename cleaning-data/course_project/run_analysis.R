@@ -76,9 +76,10 @@ full_data <- rbind(test_df, training_df)
 # keep all cols with mean() or std() as Varname
 mean_std_cols <- grep("mean\\(\\)|std\\(\\)", feature_names[, 2], ignore.case=TRUE)
 # keep the last two cols (activity, subject) as well
-mean_std_cols <- append(mean_std_cols, c(length(data)-1, length(data)))
+mean_std_cols <- append(mean_std_cols, c(length(full_data)-1, length(full_data)))
 
-selected_data <- data[, mean_std_cols]
+# pick only selected data
+selected_data <- full_data[, mean_std_cols]
 
 
 ###
