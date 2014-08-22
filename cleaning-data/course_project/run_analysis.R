@@ -1,7 +1,7 @@
 rm(list=ls())
 gc();gc()
 
-library(ggplot2)
+#library(ggplot2)
 library(dplyr)
 
 wd <- "D:/github/learning-R/cleaning-data/course_project"
@@ -51,22 +51,16 @@ feature_names <- read.csv("UCI HAR Dataset/features.txt", sep="", header=FALSE, 
 
 # read training data
 training <- read.csv("UCI HAR Dataset/train/X_train.txt", sep="", header=FALSE)
-#names(training) <- feature_names$V2
 training_activity <- read.csv("UCI HAR Dataset/train/y_train.txt", sep="", header=FALSE)
-#names(training_activity) <- c("activity")
 training_subject <- read.csv("UCI HAR Dataset/train/subject_train.txt", sep="", header=FALSE)
-#names(training_subject) <- c("subject")
 
 training_df <- tbl_df(cbind(training, training_activity, training_subject))
 names(training_df) <- c(feature_names$V2, "activity", "subject")
 
 # read test data
 test <- read.csv("UCI HAR Dataset/test/X_test.txt", sep="", header=FALSE)
-#names(test) <- feature_names$V2
 test_activity <- read.csv("UCI HAR Dataset/test/y_test.txt", sep="", header=FALSE)
-#names(test_activity) <- c("activity")
 test_subject <- read.csv("UCI HAR Dataset/test/subject_test.txt", sep="", header=FALSE)
-#names(test_subject) <- c("subject")
 
 test_df <- tbl_df(cbind(test, test_activity, test_subject))
 names(test_df) <- c(feature_names$V2, "activity", "subject")
@@ -76,7 +70,7 @@ full_data <- rbind(test_df, training_df)
 
 
 ###
-# 2) pick only mean and stds
+# 2) pick only mean and stds variables
 ###
 
 # keep all cols with mean() or std() as Varname
@@ -94,7 +88,7 @@ selected_data <- data[, mean_std_cols]
 # activity labels
 activity_labels <- read.csv("UCI HAR Dataset/activity_labels.txt", sep="", header=FALSE)
 
-selected_data$activity = factor(selected_data$activity, levels=c(1,2,3,4,5,6),
+selected_data$activity <- factor(selected_data$activity, levels=c(1,2,3,4,5,6),
                                        labels=activity_labels$V2)
 
 
@@ -109,7 +103,7 @@ selected_data$activity = factor(selected_data$activity, levels=c(1,2,3,4,5,6),
 # 5) create independent data set with the average of each variable for each activity and subject
 ###
 
-# needs dplyr
+# needs dplyr>=0.2
 means_data <- selected_data %>%
     group_by(activity, subject) %>%
     summarise_each(funs(mean)) 
