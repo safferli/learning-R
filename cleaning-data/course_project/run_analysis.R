@@ -109,10 +109,7 @@ means_data <- selected_data %>%
     group_by(activity, subject) %>%
     summarise_each(funs(mean)) 
 
-# test <- select(selected_data, activity, subject, `tBodyAcc-mean()-X`) %>%
-#     arrange(activity, subject)
-
-# add "means_of_" to all variable names, except the grouping vars
+# add "mean_of_" to all variable names, except the grouping vars
 names(means_data) <- gsub("^(t|f)","mean_of_\\1", names(means_data))
 
 # write tidy dataset
